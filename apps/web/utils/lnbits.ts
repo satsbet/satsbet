@@ -1,7 +1,7 @@
 import LNBits from "lnbits"; // using import
 
-export const lnbits = LNBits({
-  adminKey: "d00265e7de5f44f59b2408d9f0564181",
-  invoiceReadKey: "23e34be59d57408688a74500a3f24f03",
-  endpoint: "https://lnbits.com", //default
+export const { wallet, userManager, paywall, withdraw, paylink, tpos } = LNBits({
+  adminKey: 'c1363046069c4ed2b91ab78d19eb1836',
+  invoiceReadKey: 'd9fdb259c8744fdc859d4f1fe25f7692',
+  endpoint: 'https://9a76e1ccb3.d.voltageapp.io',
 });

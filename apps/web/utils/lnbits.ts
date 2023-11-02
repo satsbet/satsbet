@@ -1,8 +1,8 @@
 import LNBits from "lnbits";
+import { env } from "./env";
 
-
-export const { wallet, userManager, paywall, withdraw, paylink, tpos } = LNBits({
-  adminKey: process.env.LN_ADMIN_KEY || "",
-  invoiceReadKey: process.env.LN_INVOICE_READ_KEY || "",
-  endpoint: process.env.LN_ENDPOINT || "",
+export const lnbits = LNBits({
+  adminKey: env.LNBITS_ADMIN_KEY,
+  invoiceReadKey: env.LNBITS_INVOICE_READ_KEY,
+  endpoint: env.LNBITS_ENDPOINT,
 });

@@ -39,7 +39,10 @@ export default async function Home() {
       </div>
       {/* <div className="">
         all bets:
-        {JSON.stringify(allBets, null, 2)}
+        {JSON.stringify(allBets.map(x => ({
+          ...x,
+          amount: Number(x.amount)
+        })), null, 2)}
       </div>
       <div className="">
         all quotes:

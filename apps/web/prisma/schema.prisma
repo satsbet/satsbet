@@ -10,9 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// Price of bitcoin when the day closes
 model Quote {
-  id    Int      @id @default(autoincrement())
-  day   DateTime @unique
+  id    String   @id @default(cuid())
+  day   DateTime @unique @default(now())
+  /// in USD cents (1 USD = 100 cents)
   price Int
 }
 
@@ -32,13 +34,16 @@ enum BetStatus {
 }
 
 model Bet {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(cuid())
   createAt  DateTime  @default(now())
+  /// in satoshis
   amount    BigInt
+  /// user email
   email     String?
+  /// lightning address for refunding
   lnAddress String
+  /// what the user is betting on
   target    BetTarget
+  /// internal status of the bet
   status    BetStatus
-  day       DateTime  @unique
-  price     Int
 }

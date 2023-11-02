@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Quote {
-  id    Int      @id @default(autoincrement())
+  id    String   @id @default(cuid())
   day   DateTime @unique
   price Int
 }
@@ -32,13 +32,16 @@ enum BetStatus {
 }
 
 model Bet {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(cuid())
   createAt  DateTime  @default(now())
+  /// in satoshis
   amount    BigInt
+  /// user email
   email     String?
+  /// lightning address for refunding
   lnAddress String
+  /// what the user is betting on
   target    BetTarget
+  /// internal status of the bet
   status    BetStatus
-  day       DateTime  @unique
-  price     Int
 }

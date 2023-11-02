@@ -4,14 +4,12 @@ const prisma = new PrismaClient();
 
 async function main() {
   const bet1 = await prisma.bet.upsert({
-    where: { id: 1 },
+    where: { id: "abc1" },
     update: {},
     create: {
-      id: 1,
+      id: "abc1",
       amount: 100,
-      day: new Date(),
       lnAddress: "blah",
-      price: 100,
       status: "PENDING",
       target: "UP",
     },

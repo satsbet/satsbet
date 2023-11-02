@@ -8,7 +8,8 @@ export const env = createEnv({
    * Will throw if you access these variables on the client.
    */
   server: {
-    DATABASE_URL: z.string().url(),
+    DATABASE_PRISMA_URL: z.string().url(),
+    DATABASE_URL_NON_POOLING: z.string().url(),
     LNBITS_ENDPOINT: z.string().url(),
     LNBITS_ADMIN_KEY: z.string(),
     LNBITS_INVOICE_READ_KEY: z.string(),
@@ -26,7 +27,8 @@ export const env = createEnv({
    * 💡 You'll get type errors if not all variables from `server` & `client` are included here.
    */
   runtimeEnv: {
-    DATABASE_URL: process.env.DATABASE_URL,
+    DATABASE_PRISMA_URL: process.env.DATABASE_PRISMA_URL,
+    DATABASE_URL_NON_POOLING: process.env.DATABASE_URL_NON_POOLING,
     LNBITS_ENDPOINT: process.env.LNBITS_ENDPOINT,
     LNBITS_ADMIN_KEY: process.env.LNBITS_ADMIN_KEY,
     LNBITS_INVOICE_READ_KEY: process.env.LNBITS_INVOICE_READ_KEY,

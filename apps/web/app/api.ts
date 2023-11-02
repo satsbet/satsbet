@@ -2,10 +2,7 @@
 
 import { lnbits } from "@/utils/lnbits";
 
-export async function getUsers() {
-  return await lnbits.userManager.getUsers();
-}
-
+// create the lnbits invoice
 export async function createInvoice(amount: number, memo: string) {
   return await lnbits.wallet.createInvoice({
     amount,
@@ -14,6 +11,7 @@ export async function createInvoice(amount: number, memo: string) {
   });
 }
 
+// pay the invoice the user created
 export async function payInvoice(bolt11: string) {
   return await lnbits.wallet.payInvoice({
     bolt11,
@@ -21,6 +19,7 @@ export async function payInvoice(bolt11: string) {
   });
 }
 
+// check if the user has paid the invoice
 export async function checkInvoice(payment_hash: string) {
   return await lnbits.wallet.checkInvoice({
     payment_hash,

@@ -22,9 +22,6 @@
     "apps/*",
     "packages/*"
   ],
-  "dependencies": {
-    "@prisma/client": "^5.5.2"
-  },
   "nano-staged": {
     "*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}": "prettier --write"
   }

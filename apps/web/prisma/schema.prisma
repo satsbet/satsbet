@@ -11,8 +11,8 @@ datasource db {
 }
 
 model Quote {
-  id    Int     @id @default(autoincrement())
-  day DateTime  @unique
+  id    Int      @id @default(autoincrement())
+  day   DateTime @unique
   price Int
 }
 
@@ -32,14 +32,13 @@ enum BetStatus {
 }
 
 model Bet {
-  id    Int     @id @default(autoincrement())
-  amount  BigInt
-  email String?
+  id        Int       @id @default(autoincrement())
+  createAt  DateTime  @default(now())
+  amount    BigInt
+  email     String?
   lnAddress String
-  createAt DateTime @default(now())
-  target BetTarget
-  status BetStatus
-  day DateTime  @unique
-  price Int
+  target    BetTarget
+  status    BetStatus
+  day       DateTime  @unique
+  price     Int
 }
-

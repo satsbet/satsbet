@@ -10,8 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Quote {
   id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  day DateTime  @unique
+  price Int
 }
+
+enum BetTarget {
+  UP
+  DOWN
+}
+
+enum BetStatus {
+  PENDING
+  PAID
+  EXPIRED
+  WIN
+  LOSE
+  REFUNDED
+  PROBLEM
+}
+
+model Bet {
+  id    Int     @id @default(autoincrement())
+  amount  BigInt
+  email String?
+  lnAddress String
+  createAt DateTime @default(now())
+  target BetTarget
+  status BetStatus
+  day DateTime  @unique
+  price Int
+}
+

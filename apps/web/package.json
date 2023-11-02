@@ -22,6 +22,7 @@
     "lnbits": "^1.1.5",
     "lucide-react": "^0.291.0",
     "next": "14.0.1",
+    "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",

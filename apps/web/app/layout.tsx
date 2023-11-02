@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/utils";
+import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
 
@@ -28,7 +29,9 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        {children}
+        <ThemeProvider attribute="class" disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

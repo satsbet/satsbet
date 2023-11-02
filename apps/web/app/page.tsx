@@ -18,9 +18,5 @@ export default async function Home() {
   const lastQuote = await getLastQuote();
   const { format } = useCurrencyFormatter();
 
-  return (
-    <div className="text-red-50">
-      Last quote: {lastQuote && format(lastQuote.price / 100)}
-    </div>
-  );
+  return <div>Last quote: {lastQuote && format(lastQuote.price / 100)}</div>;
 }

@@ -4,20 +4,38 @@ const prisma = new PrismaClient();
 
 async function main() {
   const bet1 = await prisma.bet.upsert({
-    where: { id: 1 },
+    where: { id: "abc1" },
     update: {},
     create: {
-      id: 1,
+      id: "abc1",
       amount: 100,
-      day: new Date(),
       lnAddress: "blah",
-      price: 100,
       status: "PENDING",
       target: "UP",
     },
   });
 
-  console.log({ alice: bet1 });
+  const quoteToday = await prisma.quote.upsert({
+    where: { id: "q1" },
+    update: {},
+    create: {
+      id: "q1",
+      price: 3200000,
+    },
+  });
+
+  const quoteYesterday = await prisma.quote.upsert({
+    where: { id: "q2" },
+    update: {},
+    create: {
+      id: "q2",
+      // yesterday
+      day: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      price: 3100000,
+    },
+  });
+
+  console.log({ bet1, quoteToday, quoteYesterday });
 }
 
 main()

@@ -1,5 +1,5 @@
 import { prisma } from '@/utils/prisma'
-import { checkInvoice, createInvoice, getUsers } from './api'
+import { checkInvoice, createInvoice } from './api'
 
 async function getAllBets() {
   return prisma.bet.findMany()

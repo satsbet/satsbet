@@ -20,7 +20,7 @@ export default async function Home() {
 
   return (
     <div className="text-red-50">
-      Last quote: {format(lastQuote!.price / 100)}
+      Last quote: {lastQuote && format(lastQuote.price / 100)}
     </div>
   );
 }

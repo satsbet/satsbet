@@ -1,5 +1,5 @@
 import { prisma } from '@/utils/prisma'
-import { checkInvoice, createInvoice, getUsers } from '../api'
+import { checkInvoice, createInvoice, getUsers } from './api'
 
 async function getAllBets() {
   return prisma.bet.findMany()
@@ -29,13 +29,13 @@ export default async function Home() {
 
       <div className='invoice-data'>
         <h1>Invoice:</h1>
-          {JSON.stringify(walletData)}
-          --------------------------------------
+        {JSON.stringify(walletData)}
+        --------------------------------------
       </div>
-      
-      <div className='invoice-status'>       
-          <h1>Invoice Payment Status:</h1>
-          {JSON.stringify(invoiceStatus)}
+
+      <div className='invoice-status'>
+        <h1>Invoice Payment Status:</h1>
+        {JSON.stringify(invoiceStatus)}
       </div>
       {/* <div className="">
         all bets:

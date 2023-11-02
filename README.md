@@ -11,4 +11,9 @@ docker compose up -d
 
 # get the postgres DB initialized to match our prisma schema.
 npx prisma migrate reset --force --schema apps/web/prisma/schema.prisma
+
+# 🔥 if you see "npm ERR! code ENOWORKSPACES", execute this:
+npx next telemetry disable
+
+
 ```

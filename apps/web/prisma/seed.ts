@@ -15,7 +15,27 @@ async function main() {
     },
   });
 
-  console.log({ alice: bet1 });
+  const quoteToday = await prisma.quote.upsert({
+    where: { id: "q1" },
+    update: {},
+    create: {
+      id: "q1",
+      price: 3200000,
+    },
+  });
+
+  const quoteYesterday = await prisma.quote.upsert({
+    where: { id: "q2" },
+    update: {},
+    create: {
+      id: "q2",
+      // yesterday
+      day: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      price: 3100000,
+    },
+  });
+
+  console.log({ bet1, quoteToday, quoteYesterday });
 }
 
 main()

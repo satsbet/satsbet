@@ -10,9 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// Price of bitcoin when the day closes
 model Quote {
   id    String   @id @default(cuid())
-  day   DateTime @unique
+  day   DateTime @unique @default(now())
+  /// in USD cents (1 USD = 100 cents)
   price Int
 }
 

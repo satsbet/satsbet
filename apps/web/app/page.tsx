@@ -1,11 +1,14 @@
 import { prisma } from '@/utils/prisma'
-import Image from 'next/image'
 
 async function getAllBets() {
   return prisma.bet.findMany()
 }
 async function getAllQuotes() {
-  return prisma.quote.findMany()
+  return prisma.quote.findFirst({
+    orderBy: {
+      day: 'desc',
+    },
+  })
 }
 
 export default async function Home() {

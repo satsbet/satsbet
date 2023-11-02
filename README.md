@@ -1,6 +1,4 @@
 ```sh
-# copy the example env file
-cp apps/web/.env.example apps/web/.env
 
 # install packages
 npm install
@@ -9,8 +7,11 @@ npm install
 # The `-d` tells docker to run this in the background
 docker compose up -d
 
+cd apps/web
+# copy the example env file
+cp .env.example .env
 # get the postgres DB initialized to match our prisma schema.
-npx prisma migrate reset --force --schema apps/web/prisma/schema.prisma
+npx prisma migrate reset
 
 # 🔥 if you see "npm ERR! code ENOWORKSPACES", execute this:
 npx next telemetry disable

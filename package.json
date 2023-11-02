@@ -4,10 +4,14 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}\"",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "eslint": "^8.48.0",
+    "husky": "^8.0.0",
+    "nano-staged": "^0.8.0",
     "prettier": "^3.0.3",
     "tsconfig": "*",
     "turbo": "latest"
@@ -18,7 +22,7 @@
     "apps/*",
     "packages/*"
   ],
-  "dependencies": {
-    "@prisma/client": "^5.5.2"
+  "nano-staged": {
+    "*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}": "prettier --write"
   }
 }

@@ -1,33 +1,26 @@
-import { prisma } from '@/utils/prisma'
+import { prisma } from "@/utils/prisma";
+import { useCurrencyFormatter } from "../hooks/use-currency-formatter";
 
 async function getAllBets() {
-  return prisma.bet.findMany()
+  return prisma.bet.findMany();
 }
-async function getAllQuotes() {
+
+/** Show the price from yesterday's btc */
+async function getLastQuote() {
   return prisma.quote.findFirst({
     orderBy: {
-      day: 'desc',
+      day: "desc",
     },
-  })
+  });
 }
 
 export default async function Home() {
-  const allBets = await getAllBets()
-  const allQuotes = await getAllQuotes()
+  const lastQuote = await getLastQuote();
+  const { format } = useCurrencyFormatter();
 
   return (
-    <div className='text-red-50'>
-      <div className="">
-        all bets:
-        {JSON.stringify(allBets.map(x => ({
-          ...x,
-          amount: Number(x.amount)
-        })), null, 2)}
-      </div>
-      <div className="">
-        all quotes:
-        {JSON.stringify(allQuotes, null, 2)}
-      </div>
+    <div className="text-red-50">
+      Last quote: {lastQuote && format(lastQuote.price / 100)}
     </div>
-  )
+  );
 }

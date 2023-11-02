@@ -1,6 +1,6 @@
 ```sh
 # copy the example env file
-cp .env.example .env
+cp apps/web/.env.example apps/web/.env
 
 # install packages
 npm install
@@ -14,6 +14,4 @@ npx prisma migrate reset --force --schema apps/web/prisma/schema.prisma
 
 # 🔥 if you see "npm ERR! code ENOWORKSPACES", execute this:
 npx next telemetry disable
-
-
 ```

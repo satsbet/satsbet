@@ -6,7 +6,7 @@ import {
   TOP_MULTIPLIER,
 } from "./constants";
 
-export function getTodayBets(status: BetStatus) {
+function getTodayBets(status: BetStatus) {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set to the start of the day
   const tomorrow = new Date();
@@ -36,6 +36,11 @@ export function calculateMultiplier(amount1: number, amount2: number) {
   return Math.min(Number(calculatedMultiplier), TOP_MULTIPLIER);
 }
 
+/**
+ * Get the multiplier for the current day
+ *
+ * @returns {Promise<{up: number, down: number}>} The multiplier for up and down
+ */
 export async function getMultiplier() {
   let amountUp = 0n;
   let amountDown = 0n;
@@ -67,4 +72,13 @@ export async function getMultiplier() {
     up: calculateMultiplier(Number(amountUp), Number(amountDown)),
     down: calculateMultiplier(Number(amountDown), Number(amountUp)),
   };
+}
+
+/** Show the price from yesterday's btc */
+export async function getLastQuote() {
+  return prisma.quote.findFirst({
+    orderBy: {
+      day: "desc",
+    },
+  });
 }

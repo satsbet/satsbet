@@ -3,50 +3,26 @@
 import { z } from "zod";
 import { lnbits } from "@/utils/lnbits";
 import { BetTarget } from "@prisma/client";
-import { submitBet } from "./submitBet";
 import { redirect } from "next/navigation";
-
-// create the lnbits invoice
-export async function createInvoice(amount: number, memo: string) {
-  try {
-    return await lnbits.wallet.createInvoice({
-      amount,
-      memo,
-      out: false,
-    });
-  } catch (error) {
-    return error;
-  }
-}
+import { prisma } from "@/utils/prisma";
 
 // pay the invoice the user created
 export async function payInvoice(bolt11: string) {
-  try {
-    return await lnbits.wallet.payInvoice({
-      bolt11,
-      out: true,
-    });
-  } catch (error) {
-    return error;
-  }
-}
-
-// check if the user has paid the invoice
-export async function checkInvoice(payment_hash: string) {
-  try {
-    return await lnbits.wallet.checkInvoice({
-      payment_hash,
-    });
-  } catch (error) {
-    return error;
-  }
+  // TODO: move this to another place
+  return await lnbits.wallet.payInvoice({
+    bolt11,
+    out: true,
+  });
 }
 
 const schema = z.object({
   target: z.nativeEnum(BetTarget),
   amount: z.coerce.bigint().positive(),
   lnAddress: z.string().email("Please enter a lightning address"),
-  email: z.string().email("Please enter a valid email address").optional(),
+  email: z
+    .string()
+    .email("Please enter a valid email address")
+    .or(z.literal("")),
 });
 
 export async function createBet(prevState: any, formData: FormData) {
@@ -61,7 +37,23 @@ export async function createBet(prevState: any, formData: FormData) {
     return data.error.flatten();
   }
 
-  const { id } = await submitBet(data.data);
+  const bet = data.data;
+
+  // create lightning invoice for the bet
+  const lnbitsResponse = await lnbits.wallet.createInvoice({
+    amount: Number(bet.amount),
+    memo: "Thank you for betting with Satoshi!",
+    out: false,
+  });
+
+  // save the bet to the database
+  const { id } = await prisma.bet.create({
+    data: {
+      ...bet,
+      invoicePaymentHash: lnbitsResponse.payment_hash,
+      invoiceRequestHash: lnbitsResponse.payment_request,
+    },
+  });
 
   redirect(`/${id}`);
 }

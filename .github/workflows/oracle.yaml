@@ -1,0 +1,18 @@
+name: Daily Workflow
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Curl request to specified URL and don't wait for response
+        run: |
+          curl -m 5 -o /dev/null -sSf https://ew4vtywkzi.execute-api.us-west-1.amazonaws.com/default/oracle-btc
+          echo "Curl request sent to specified URL"

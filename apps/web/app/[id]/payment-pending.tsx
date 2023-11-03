@@ -44,7 +44,7 @@ function getMarketMoodSentence(trend: BetTarget): string {
 export async function PaymentPending(props: Bet) {
   const { id, invoiceRequestHash, target, createAt } = props;
   const time = new Date(createAt.toISOString());
-  time.setSeconds(time.getSeconds() + EXPIRATION_TIME / 1000);
+  time.setUTCSeconds(time.getUTCSeconds() + EXPIRATION_TIME / 1000);
 
   return (
     <div className="max-w-lg mx-auto p-6 md:border rounded gap-4 flex flex-col">

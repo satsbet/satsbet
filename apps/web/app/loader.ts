@@ -8,9 +8,9 @@ import {
 
 function getTodayBets() {
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set to the start of the day
+  today.setUTCHours(0, 0, 0, 0); // Set to the start of the day
   const tomorrow = new Date();
-  tomorrow.setHours(24, 0, 0, 0); // Set to the start of the next day
+  tomorrow.setUTCHours(24, 0, 0, 0); // Set to the start of the next day
 
   return prisma.bet.findMany({
     select: {

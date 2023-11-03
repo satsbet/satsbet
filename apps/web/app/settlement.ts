@@ -1,15 +1,29 @@
 import { Bet, BetStatus, BetTarget, Quote } from "@prisma/client";
 import { calculateMultiplier } from "./multipliers";
 import { prisma } from "@/utils/prisma";
-import { SATSBET_FEE_PERCENT } from "./constants";
 import { payInvoice } from "./actions";
 
 export async function createLnAddressInvoice(
   lnAddress: string,
   amount: number,
 ) {
-  console.log(`Creating invoice for ${lnAddress} with amount ${amount}`);
-  return "invoice request"; //TODO: Implement
+  const [username, domain] = lnAddress.split("@");
+
+  // get random number from 0 to 100 to force cache clean
+  const randomNumber = Math.floor(Math.random() * 100);
+
+  const url = `https://${domain}/.well-known/lnurlp/${username}?cache=${randomNumber}`;
+  const response = await fetch(url);
+  const responseJson = await response.json();
+
+  const { callback } = responseJson;
+  const invoiceUrl = `${callback}?amount=${amount * 1000}`; // amount * 1000 to convert to milisatoshi
+  console.log(invoiceUrl);
+
+  const invoiceResponse = await fetch(invoiceUrl);
+  const { pr } = await invoiceResponse.json();
+  console.log(pr);
+  return pr;
 }
 
 export async function runSettlement() {
@@ -83,8 +97,12 @@ async function processBet(newStatus: BetStatus, bet: Bet, multiplier: number) {
       bet.lnAddress,
       amountToPay,
     );
-    await payInvoice(paymentRequest);
-    await updateBetStatus(bet.id, BetStatus.REFUNDED);
+    const paymentStatus = await payInvoice(paymentRequest);
+    console.log(paymentStatus);
+
+    paymentStatus === "paid"
+      ? await updateBetStatus(bet.id, BetStatus.REFUNDED)
+      : await updateBetStatus(bet.id, BetStatus.PROBLEM);
   }
 }
 

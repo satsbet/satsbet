@@ -3,6 +3,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "test": "turbo run test",
+    "test:run": "turbo run test:run",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "format": "prettier --write \"**/*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}\"",
@@ -14,7 +16,9 @@
     "nano-staged": "^0.8.0",
     "prettier": "^3.0.3",
     "tsconfig": "*",
-    "turbo": "latest"
+    "turbo": "latest",
+    "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^0.34.6"
   },
   "name": "satsbet",
   "packageManager": "npm@9.6.7",

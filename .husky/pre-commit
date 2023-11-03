@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx nano-staged && npm run typecheck
+npx nano-staged && npm run test:run && npm run typecheck

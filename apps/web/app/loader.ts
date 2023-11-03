@@ -27,13 +27,21 @@ function getTodayBets(status: BetStatus) {
   });
 }
 
-export function calculateMultiplier(amount1: number, amount2: number) {
-  if (!amount2) {
+/**
+ * Calculate the multiplier for the pot
+ *
+ * @param pot The sum of the bets for the current day
+ * @param other The other pot you want to compare with
+ * @returns The multiplier for the pot
+ */
+export function calculateMultiplier(pot: number, other: number) {
+  if (!other) {
     return TOP_MULTIPLIER;
   }
   const calculatedMultiplier =
-    ((amount1 + amount2) * ((100 - SATSBET_FEE_PERCENT) / 100)) / amount1;
-  return Math.min(Number(calculatedMultiplier), TOP_MULTIPLIER);
+    ((pot + other) * ((100 - SATSBET_FEE_PERCENT) / 100)) / pot;
+
+  return Math.min(calculatedMultiplier, TOP_MULTIPLIER);
 }
 
 /**

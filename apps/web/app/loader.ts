@@ -44,7 +44,7 @@ function getTodayBets() {
  */
 export function calculateMultiplier(pot: number, other: number) {
   if (!other) {
-    return TOP_MULTIPLIER;
+    return 1;
   }
   const calculatedMultiplier =
     ((pot + other) * ((100 - SATSBET_FEE_PERCENT) / 100)) / pot;

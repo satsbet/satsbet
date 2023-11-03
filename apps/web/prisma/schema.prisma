@@ -35,18 +35,18 @@ enum BetStatus {
 }
 
 model Bet {
-  id        String    @id @default(cuid())
-  createAt  DateTime  @default(now())
+  id                 String    @id @default(nanoid())
+  createAt           DateTime  @default(now())
   /// in satoshis
-  amount    BigInt
+  amount             BigInt
   /// user email
-  email     String?
+  email              String?
   /// lightning address for refunding
-  lnAddress String
+  lnAddress          String
   /// what the user is betting on
-  target    BetTarget
+  target             BetTarget
   /// internal status of the bet
-  status    BetStatus
+  status             BetStatus @default(PENDING)
   /// invoice payment hash
   invoicePaymentHash String
   /// invoice request hash

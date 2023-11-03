@@ -36,14 +36,13 @@ export async function createBet(prevState: any, formData: FormData) {
     email: formData.get("email"),
   });
 
+  // TODO: close betting
+
   if (!data.success) {
     return data.error.flatten();
   }
 
   const bet = data.data;
-
-  console.log(bet.amount);
-  console.log(Number(bet.amount));
 
   // create lightning invoice for the bet
   const lnbitsResponse = await lnbits.wallet.createInvoice({
@@ -51,8 +50,6 @@ export async function createBet(prevState: any, formData: FormData) {
     memo: "Thank you for betting with Satoshi!",
     out: false,
   });
-
-  console.log(lnbitsResponse);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);

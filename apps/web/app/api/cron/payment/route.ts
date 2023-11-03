@@ -19,8 +19,6 @@ export async function GET() {
         payment_hash: invoicePaymentHash,
       })) as any;
 
-      console.log(result);
-
       if (result.paid) {
         await prisma.bet.update({
           where: {

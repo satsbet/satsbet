@@ -18,7 +18,6 @@ export async function createLnAddressInvoice(
 
   const { callback } = responseJson;
   const invoiceUrl = `${callback}?amount=${amount * 1000}`; // amount * 1000 to convert to milisatoshi
-  console.log(invoiceUrl);
 
   const invoiceResponse = await fetch(invoiceUrl);
   const { pr } = await invoiceResponse.json();
@@ -97,7 +96,6 @@ async function processBet(newStatus: BetStatus, bet: Bet, multiplier: number) {
       amountToPay,
     );
     const paymentStatus = (await payInvoice(paymentRequest)) as any;
-    console.log(paymentStatus);
 
     paymentStatus.payment_hash
       ? await updateBetStatus(bet.id, BetStatus.REFUNDED)

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { lnbits } from "@/utils/lnbits";
 import { BetTarget } from "@prisma/client";
 import { submitBet } from "./submitBet";
+import { redirect } from "next/navigation";
 
 // create the lnbits invoice
 export async function createInvoice(amount: number, memo: string) {
@@ -60,7 +61,7 @@ export async function createBet(prevState: any, formData: FormData) {
     return data.error.flatten();
   }
 
-  await submitBet(data.data);
+  const { id } = await submitBet(data.data);
 
-  return { message: "success" };
+  redirect(`/${id}`);
 }

@@ -52,7 +52,7 @@ export function PlaceBetForm() {
     <form action={formAction}>
       <Label htmlFor="target">Target</Label>
       <div className="flex gap-2">
-        <input type="hidden" name="target" value={target} />
+        <input type="hidden" name="target" value={target || ""} />
         <Toggle
           variant="outline"
           className="w-28"

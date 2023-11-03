@@ -1,8 +1,8 @@
 import { Bet, BetStatus, BetTarget, Quote } from "@prisma/client";
 import { calculateMultiplier } from "./multipliers";
 import { prisma } from "@/utils/prisma";
-import { payInvoice } from "./api";
 import { SATSBET_FEE_PERCENT } from "./constants";
+import { payInvoice } from "./actions";
 
 export async function createLnAddressInvoice(
   lnAddress: string,

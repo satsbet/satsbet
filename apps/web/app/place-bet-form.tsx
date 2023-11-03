@@ -59,7 +59,7 @@ export function PlaceBetForm() {
           pressed={target === "DOWN"}
           onPressedChange={() => setTarget("DOWN")}
         >
-          DOWN <TrendingDown className="ml-2" />
+          DOWN <TrendingDown className="h-4 w-4 ml-2" />
         </Toggle>
         <Toggle
           variant="outline"
@@ -67,7 +67,7 @@ export function PlaceBetForm() {
           pressed={target === "UP"}
           onPressedChange={() => setTarget("UP")}
         >
-          <TrendingUp className="mr-2" />
+          <TrendingUp className="h-4 w-4 mr-2" />
           UP
         </Toggle>
       </div>

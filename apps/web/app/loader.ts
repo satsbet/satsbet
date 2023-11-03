@@ -6,7 +6,7 @@ import {
   TOP_MULTIPLIER,
 } from "./constants";
 
-function getTodayBets(status: BetStatus) {
+function getTodayBets() {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set to the start of the day
   const tomorrow = new Date();
@@ -16,13 +16,21 @@ function getTodayBets(status: BetStatus) {
     select: {
       amount: true,
       target: true,
+      status: true,
     },
     where: {
       createAt: {
         gte: today,
         lt: tomorrow,
       },
-      status,
+      OR: [
+        {
+          status: BetStatus.PAID,
+        },
+        {
+          status: BetStatus.PENDING,
+        },
+      ],
     },
   });
 }
@@ -50,35 +58,28 @@ export function calculateMultiplier(pot: number, other: number) {
  * @returns {Promise<{up: number, down: number}>} The multiplier for up and down
  */
 export async function getMultiplier() {
-  let amountUp = 0n;
-  let amountDown = 0n;
+  const todayBets = await getTodayBets();
 
-  const todayPaidBets = await getTodayBets(BetStatus.PAID);
-  for (let i = 0; i < todayPaidBets.length; i++) {
-    let todayPaidBet = todayPaidBets[i];
-    if (todayPaidBet.target === BetTarget.UP) {
-      amountUp = amountUp + todayPaidBet.amount;
-    } else {
-      amountDown += todayPaidBet.amount;
-    }
-  }
-  const todayPendingBets = await getTodayBets(BetStatus.PENDING);
-  for (let i = 0; i < todayPendingBets.length; i++) {
-    let todayPaidBet = todayPendingBets[i];
-    if (todayPaidBet.target === BetTarget.UP) {
-      amountUp += BigInt(
-        (Number(todayPaidBet.amount) * PENDING_BETS_WEIGHT_PERCENT) / 100,
-      );
-    } else {
-      amountDown += BigInt(
-        (Number(todayPaidBet.amount) * PENDING_BETS_WEIGHT_PERCENT) / 100,
-      );
-    }
-  }
+  const total = todayBets.reduce(
+    (acc, bet) => {
+      const amount =
+        bet.status === "PENDING"
+          ? Number(bet.amount) * PENDING_BETS_WEIGHT_PERCENT
+          : Number(bet.amount);
+
+      if (bet.target === BetTarget.UP) {
+        acc.up += amount;
+      } else {
+        acc.down += amount;
+      }
+      return acc;
+    },
+    { up: 0, down: 0 },
+  );
 
   return {
-    up: calculateMultiplier(Number(amountUp), Number(amountDown)),
-    down: calculateMultiplier(Number(amountDown), Number(amountUp)),
+    up: calculateMultiplier(total.up, total.down),
+    down: calculateMultiplier(total.down, total.up),
   };
 }
 

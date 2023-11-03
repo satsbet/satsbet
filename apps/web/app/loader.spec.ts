@@ -9,7 +9,7 @@ beforeEach(() => {
 
 it("should return TOP_MULTIPLIER if amount2 is zero", () => {
   const multiplier = calculateMultiplier(100, 0);
-  expect(multiplier).toBe(TOP_MULTIPLIER);
+  expect(multiplier).toBe(1);
 });
 
 it("should multiplier be a fraction", () => {

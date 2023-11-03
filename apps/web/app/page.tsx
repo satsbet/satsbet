@@ -8,8 +8,11 @@ const DynamicCountdown = dynamic(() => import("./CountdownHome"), {
   loading: () => <>...</>,
 });
 
+export const revalidate = 60;
+
 export default async function Home() {
-  const lastQuote = await getLastQuote();
+  // const lastQuote = await getLastQuote();
+  const lastQuote = { price: 3485900 };
   const multiplier = await getMultiplier();
   const { format } = useCurrencyFormatter();
 

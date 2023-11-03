@@ -4,6 +4,7 @@ import { lnbits } from "@/utils/lnbits";
 import { pusherServer } from "@/utils/pusher.server";
 import { getMultiplier } from "@/app/loader";
 import { EXPIRATION_TIME } from "@/app/constants";
+import { revalidatePath } from "next/cache";
 
 // Opt out of caching for all data requests in the route segment
 export const dynamic = "force-dynamic";
@@ -16,6 +17,7 @@ export async function GET() {
   // FIX: this should come from a webhook but lnbits is not sending it
   await payInvoices();
 
+  revalidatePath("/");
   return Response.json({ dispatched: true });
 }
 
@@ -26,6 +28,7 @@ export async function POST() {
   // FIX: this should come from a webhook but lnbits is not sending it
   await payInvoices();
 
+  revalidatePath("/");
   return Response.json({ dispatched: true });
 }
 

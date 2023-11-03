@@ -3,6 +3,9 @@ import { calculateMultiplier } from "@/app/loader";
 import { prisma } from "@/utils/prisma";
 import { payInvoice } from "@/app/actions";
 
+// Opt out of caching for all data requests in the route segment
+export const dynamic = "force-dynamic";
+
 async function createLnAddressInvoice(lnAddress: string, amount: number) {
   const [username, domain] = lnAddress.split("@");
 

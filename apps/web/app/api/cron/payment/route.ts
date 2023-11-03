@@ -5,6 +5,9 @@ import { pusherServer } from "@/utils/pusher.server";
 import { getMultiplier } from "@/app/loader";
 import { EXPIRATION_TIME } from "@/app/constants";
 
+// Opt out of caching for all data requests in the route segment
+export const dynamic = "force-dynamic";
+
 /** Used to validate that the user has payed a invoice */
 export async function GET() {
   // Mark all unpaid invoices that have more than 5 min as expired

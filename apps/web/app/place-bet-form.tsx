@@ -22,7 +22,7 @@ function SubmitButton() {
       Please wait
     </Button>
   ) : (
-    <Button type="submit">Pay</Button>
+    <Button type="submit">Place bet</Button>
   );
 }
 

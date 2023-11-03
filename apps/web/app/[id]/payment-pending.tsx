@@ -5,6 +5,8 @@ import { Copyable } from "./copyable";
 import { Label } from "@/components/ui/label";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Countdown } from "@/components/countdown";
+import { EXPIRATION_TIME } from "../constants";
 
 function getMarketMoodSentence(trend: BetTarget): string {
   const sentences = {
@@ -40,44 +42,63 @@ function getMarketMoodSentence(trend: BetTarget): string {
 }
 
 export async function PaymentPending(props: Bet) {
-  const { id, invoiceRequestHash, target } = props;
+  const { id, invoiceRequestHash, target, createAt } = props;
+  const time = new Date(createAt.toISOString());
+  time.setSeconds(time.getSeconds() + EXPIRATION_TIME / 1000);
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold">{getMarketMoodSentence(target)}</h1>
+    <div className="max-w-lg mx-auto p-6 md:border rounded gap-4 flex flex-col">
+      <h1
+        className="text-xl md:text-4xl font-extrabold"
+        style={{
+          // @ts-expect-error
+          textWrap: "balance",
+        }}
+      >
+        {getMarketMoodSentence(target)}
+      </h1>
 
       <p>Please pay the following invoice to participate on the bet.</p>
 
-      <QR
-        className="h-64 w-64 p-4 hidden sm:block"
-        rounding={100}
-        // cutout
-        // cutoutElement={
-        //   <img
-        //     src="https://random.imagecdn.app/500/500"
-        //     style={{
-        //       objectFit: "contain",
-        //       width: "100%",
-        //       height: "100%",
-        //     }}
-        //   />
-        // }
-        errorCorrectionLevel="H"
-      >
-        {invoiceRequestHash}
-      </QR>
+      <div className="flex flex-col md:flex-row gap-4">
+        <QR
+          className="w-1/2 hidden sm:block"
+          rounding={100}
+          // cutout
+          // cutoutElement={
+          //   <img
+          //     src="https://random.imagecdn.app/500/500"
+          //     style={{
+          //       objectFit: "contain",
+          //       width: "100%",
+          //       height: "100%",
+          //     }}
+          //   />
+          // }
+          errorCorrectionLevel="H"
+        >
+          {invoiceRequestHash}
+        </QR>
+        <div className="flex md:w-1/2 flex-col gap-4">
+          <Button asChild>
+            <a href={`lightning:${invoiceRequestHash}`}>
+              <Zap className="mr-2 h-4 w-4" /> Pay Invoice{" "}
+            </a>
+          </Button>
 
-      <Button asChild>
-        <a href={`lightning:${invoiceRequestHash}`}>
-          <Zap className="mr-2 h-4 w-4" /> Pay Invoice{" "}
-        </a>
-      </Button>
+          <div className="">
+            <Label>Invoice #</Label>
+            <Copyable text={invoiceRequestHash} />
+          </div>
 
-      <div className="">
-        <Label>Invoice #</Label>
-        <Copyable text={invoiceRequestHash} />
+          <div className="">
+            <Label>Invoice expire in</Label>
+            <div className="text-foreground text-sm">
+              <Countdown expiryTimestamp={time} />
+            </div>
+          </div>
+        </div>
       </div>
-
       <div className="flex flex-col gap-2 mt-4">
         <Label>Bet #</Label>
         <div className="text-2xl font-bold">{id}</div>

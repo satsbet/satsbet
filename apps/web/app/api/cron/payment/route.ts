@@ -3,6 +3,7 @@ import { BetStatus, BetTarget } from "@prisma/client";
 import { lnbits } from "@/utils/lnbits";
 import { pusherServer } from "@/utils/pusher.server";
 import { getMultiplier } from "@/app/loader";
+import { EXPIRATION_TIME } from "@/app/constants";
 
 /** Used to validate that the user has payed a invoice */
 export async function GET() {
@@ -75,13 +76,13 @@ async function hasPaid({ invoicePaymentHash }: { invoicePaymentHash: string }) {
 /** Mark invoices that older than 5 minutes as expired */
 async function expireInvoices() {
   const now = new Date();
-  const fiveMinutesAgo = new Date(now.getTime() - 5 * 60000);
+  const cutOff = new Date(now.getTime() - EXPIRATION_TIME);
 
   await prisma.bet.updateMany({
     where: {
       status: BetStatus.PENDING,
       createAt: {
-        lt: fiveMinutesAgo,
+        lt: cutOff,
       },
     },
     data: {

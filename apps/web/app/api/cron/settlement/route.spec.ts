@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { localCalculateMultiplier } from "./settlement";
-import { TOP_MULTIPLIER } from "./constants";
+import { localCalculateMultiplier } from "./route";
+import { TOP_MULTIPLIER } from "../../../constants";
 
 describe("localCalculateMultiplier", () => {
   it("should return TOP_MULTIPLIER when amountDown is 0 and bet is UP", () => {

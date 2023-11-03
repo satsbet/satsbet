@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Curl request to specified URL and don't wait for response
+      - name: Curl request to specified URL and ignore response and timeout failure
         run: |
-          curl -m 5 -o /dev/null -sSf https://ew4vtywkzi.execute-api.us-west-1.amazonaws.com/default/oracle-btc
+          curl -m 5 -o /dev/null -sSf https://ew4vtywkzi.execute-api.us-west-1.amazonaws.com/default/oracle-btc || true
           echo "Curl request sent to specified URL"

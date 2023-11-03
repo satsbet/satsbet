@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { lnbits } from "@/utils/lnbits";
-import { BetTarget } from "@prisma/client";
+import { BetTarget, BetStatus } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { prisma } from "@/utils/prisma";
 
@@ -39,6 +39,9 @@ export async function createBet(prevState: any, formData: FormData) {
 
   const bet = data.data;
 
+  console.log(bet.amount);
+  console.log(Number(bet.amount));
+
   // create lightning invoice for the bet
   const lnbitsResponse = await lnbits.wallet.createInvoice({
     amount: Number(bet.amount),
@@ -46,10 +49,17 @@ export async function createBet(prevState: any, formData: FormData) {
     out: false,
   });
 
+  console.log(lnbitsResponse);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   // save the bet to the database
   const { id } = await prisma.bet.create({
     data: {
       ...bet,
+      status: BetStatus.PENDING,
+      createAt: today,
       invoicePaymentHash: lnbitsResponse.payment_hash,
       invoiceRequestHash: lnbitsResponse.payment_request,
     },

@@ -3,12 +3,12 @@ import type { Bet } from "@prisma/client";
 import { QR } from "react-qr-rounded";
 
 export async function PaymentPending(props: Bet) {
-  const { id, ...rest } = props;
+  const { invoiceRequestHash } = props;
 
   return (
     <div>
       <QR
-        className="h-64 w-64"
+        className="h-64 w-64 p-4"
         rounding={100}
         // cutout
         // cutoutElement={
@@ -23,9 +23,9 @@ export async function PaymentPending(props: Bet) {
         // }
         errorCorrectionLevel="H"
       >
-        https://iofjuupasli.github.io/react-qr-rounded/
+        {invoiceRequestHash}
       </QR>
-      ,
+      <pre>{invoiceRequestHash}</pre>
     </div>
   );
 }

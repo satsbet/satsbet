@@ -18,7 +18,7 @@ export async function submitBet(bet: SubmitBetInput) {
     "Thank you for betting with Satoshi!",
   );
 
-  await prisma.bet.create({
+  return await prisma.bet.create({
     data: {
       ...bet,
       status: BetStatus.PENDING,
@@ -27,5 +27,4 @@ export async function submitBet(bet: SubmitBetInput) {
       invoiceRequestHash: lnbitsResponse.payment_request,
     },
   });
-  return lnbitsResponse.payment_request;
 }

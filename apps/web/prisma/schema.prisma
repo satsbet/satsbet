@@ -35,7 +35,7 @@ enum BetStatus {
 }
 
 model Bet {
-  id                 String    @id @default(nanoid())
+  id                 String    @id @default(nanoid(12))
   createAt           DateTime  @default(now())
   /// in satoshis
   amount             BigInt

@@ -1,0 +1,22 @@
+name: 🔒 QA Cypress Tests Stable
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run every 30 seconds
+    - cron: "*/30 * * * *"
+
+jobs:
+  cron:
+    runs-on: ubuntu
+    steps:
+      - name: run payment check cron
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+        run: |
+          cron_result=$(curl -o /dev/null -s -w "%{http_code}\n" https://$BASE_URL/api/cron/payment)
+
+          if [ "$cron_result" -ne 200 ]; then
+              echo "Cron job failed with status code $cron_result"
+              exit 1
+          fi

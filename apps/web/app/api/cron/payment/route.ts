@@ -48,12 +48,14 @@ async function payInvoices() {
     },
   });
 
-  // Trigger an event on the client
-  await pusherServer.trigger(paidInvoicesIds, "payment.succeeded", {});
-  await pusherServer.trigger("home", "payment.succeeded", {
-    targets: paidInvoices.map((i) => i.target),
-    multiplier: await getMultiplier(),
-  });
+  if (paidInvoicesIds.length > 0) {
+    // Trigger an event on the client
+    await pusherServer.trigger(paidInvoicesIds, "payment.succeeded", {});
+    await pusherServer.trigger("home", "payment.succeeded", {
+      targets: paidInvoices.map((i) => i.target),
+      multiplier: await getMultiplier(),
+    });
+  }
 }
 
 async function hasPaid({ invoicePaymentHash }: { invoicePaymentHash: string }) {

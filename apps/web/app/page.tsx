@@ -1,5 +1,6 @@
 import { prisma } from "@/utils/prisma";
 import { useCurrencyFormatter } from "../hooks/use-currency-formatter";
+import { PlaceBetForm } from "./place-bet-form";
 
 async function getAllBets() {
   return prisma.bet.findMany();
@@ -18,5 +19,10 @@ export default async function Home() {
   const lastQuote = await getLastQuote();
   const { format } = useCurrencyFormatter();
 
-  return <div>Last quote: {lastQuote && format(lastQuote.price / 100)}</div>;
+  return (
+    <div>
+      Last quote: {lastQuote && format(lastQuote.price / 100)}
+      <PlaceBetForm />
+    </div>
+  );
 }

@@ -2,7 +2,7 @@ import { prisma } from "@/utils/prisma";
 import { BetStatus } from "@prisma/client";
 import { lnbits } from "@/utils/lnbits";
 
-export async function checkInvoicePaymentStatus(payment_hash: string) {
+export async function GET() {
   const unpaidInvoices = await prisma.bet.findMany({
     select: {
       id: true,
@@ -15,11 +15,13 @@ export async function checkInvoicePaymentStatus(payment_hash: string) {
 
   unpaidInvoices.forEach(async ({ id, invoicePaymentHash }) => {
     try {
-      const result = await lnbits.wallet.checkInvoice({
+      const result = (await lnbits.wallet.checkInvoice({
         payment_hash: invoicePaymentHash,
-      });
+      })) as any;
 
-      if (result.payment_hash) {
+      console.log(result);
+
+      if (result.paid) {
         await prisma.bet.update({
           where: {
             id: id,
@@ -33,4 +35,5 @@ export async function checkInvoicePaymentStatus(payment_hash: string) {
       return error;
     }
   });
+  return Response.json({ dispatched: true });
 }

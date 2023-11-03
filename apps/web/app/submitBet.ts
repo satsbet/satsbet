@@ -1,6 +1,6 @@
 import { prisma } from "@/utils/prisma";
 import { BetStatus, BetTarget } from "@prisma/client";
-import { createInvoice } from "./api";
+import { createInvoice } from "./actions";
 
 export type SubmitBetInput = {
   amount: bigint;

@@ -38,7 +38,7 @@ async function payInvoices() {
   // update the status of the bet to paid
   const paidInvoices = invoice.filter((i) => i.paid);
   const paidInvoicesIds = paidInvoices.map((i) => i.id);
-  console.log("🔥 ~ ", paidInvoicesIds);
+  console.info("🔥 ~ ", paidInvoicesIds);
 
   await prisma.bet.updateMany({
     where: {
@@ -69,11 +69,11 @@ async function hasPaid({ invoicePaymentHash }: { invoicePaymentHash: string }) {
       paid: boolean;
     };
 
-    console.log("🔥 ~ ", result);
+    console.info("🔥 ~ ", result);
 
     return result.paid;
   } catch (error) {
-    console.log("🔥 ~ ", error);
+    console.info("🔥 ~ ", error);
     return false;
   }
 }

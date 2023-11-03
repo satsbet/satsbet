@@ -22,7 +22,6 @@ export async function createLnAddressInvoice(
 
   const invoiceResponse = await fetch(invoiceUrl);
   const { pr } = await invoiceResponse.json();
-  console.log(pr);
   return pr;
 }
 
@@ -98,9 +97,9 @@ async function processBet(newStatus: BetStatus, bet: Bet, multiplier: number) {
       amountToPay,
     );
     const paymentStatus = (await payInvoice(paymentRequest)) as any;
-    console.log(`paymentStatus: ${paymentStatus}`);
+    console.log(paymentStatus);
 
-    paymentStatus.paid === true
+    paymentStatus.payment_hash
       ? await updateBetStatus(bet.id, BetStatus.REFUNDED)
       : await updateBetStatus(bet.id, BetStatus.PROBLEM);
   }

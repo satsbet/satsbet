@@ -97,10 +97,10 @@ async function processBet(newStatus: BetStatus, bet: Bet, multiplier: number) {
       bet.lnAddress,
       amountToPay,
     );
-    const paymentStatus = await payInvoice(paymentRequest);
-    console.log(paymentStatus);
+    const paymentStatus = (await payInvoice(paymentRequest)) as any;
+    console.log(`paymentStatus: ${paymentStatus}`);
 
-    paymentStatus === "paid"
+    paymentStatus.paid === true
       ? await updateBetStatus(bet.id, BetStatus.REFUNDED)
       : await updateBetStatus(bet.id, BetStatus.PROBLEM);
   }

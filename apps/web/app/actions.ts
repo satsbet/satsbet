@@ -62,3 +62,36 @@ export async function createBet(prevState: any, formData: FormData) {
 
   redirect(`/${id}`);
 }
+
+// pay the invoice the user created
+export async function setBTCLastPrice(price: number) {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0); // Set to the start of the day
+
+  // find the quote for today, if it exists, update it, otherwise create it
+  const todaysQuotation = await prisma.quote.findMany({
+    where: {
+      day: {
+        gte: today,
+      },
+    },
+  });
+
+  if (todaysQuotation.length === 0) {
+    await prisma.quote.create({
+      data: {
+        day: today,
+        price: price,
+      },
+    });
+  } else {
+    await prisma.quote.update({
+      where: {
+        id: todaysQuotation[0].id,
+      },
+      data: {
+        price: price,
+      },
+    });
+  }
+}

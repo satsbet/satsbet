@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: run payment check cron
         run: |
-          cron_result=$(curl -o /dev/null -s -w "%{http_code}\n" https://satsbet-14prd3iag-wladpaiva.vercel.app/api/cron/payment)
+          cron_result=$(curl -o /dev/null -s -w "%{http_code}\n" https://satsbet.vercel.app/api/cron/payment)
 
           if [ "$cron_result" -ne 200 ]; then
               echo "Cron job failed with status code $cron_result"

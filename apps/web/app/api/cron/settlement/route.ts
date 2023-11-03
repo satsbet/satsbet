@@ -3,10 +3,7 @@ import { calculateMultiplier } from "@/app/loader";
 import { prisma } from "@/utils/prisma";
 import { payInvoice } from "@/app/actions";
 
-export async function createLnAddressInvoice(
-  lnAddress: string,
-  amount: number,
-) {
+async function createLnAddressInvoice(lnAddress: string, amount: number) {
   const [username, domain] = lnAddress.split("@");
 
   // get random number from 0 to 100 to force cache clean

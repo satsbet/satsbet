@@ -27,7 +27,7 @@ export async function createLnAddressInvoice(
 
 export async function runSettlement() {
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  today.setUTCHours(0, 0, 0, 0);
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
   const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
   const yesterdayQuote = await prisma.quote.findFirst({

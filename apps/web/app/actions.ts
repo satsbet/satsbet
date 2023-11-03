@@ -55,7 +55,7 @@ export async function createBet(prevState: any, formData: FormData) {
   console.log(lnbitsResponse);
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  today.setUTCHours(0, 0, 0, 0);
 
   // save the bet to the database
   const { id } = await prisma.bet.create({

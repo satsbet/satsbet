@@ -47,4 +47,6 @@ model Bet {
   target    BetTarget
   /// internal status of the bet
   status    BetStatus
+  /// invoice payment hash
+  paymentHash String?
 }

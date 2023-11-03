@@ -1,4 +1,4 @@
-name: 🔒 QA Cypress Tests Stable
+name: Payment cronjob
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   cron:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: run payment check cron
         env:

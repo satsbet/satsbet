@@ -38,26 +38,25 @@ export async function processSettlement(
   const { amountUp, amountDown } = calculateAmounts(todayPaidBets);
   let multiplier =
     betResult === BetTarget.UP
-      ? calculateMultiplier(
-          (amountUp * (100n - SATSBET_FEE_PERCENT)) / 100n,
-          amountDown,
-        )
-      : calculateMultiplier(
-          (amountDown * (100n - SATSBET_FEE_PERCENT)) / 100n,
-          amountUp,
-        );
+      ? calculateMultiplier(Number(amountUp), Number(amountDown))
+      : calculateMultiplier(Number(amountDown), Number(amountUp));
 
   // Get bets based on the result
-  const betsToProcess = todayPaidBets.filter((bet) => bet.target === betResult);
+  const winBets = todayPaidBets.filter((bet) => bet.target === betResult);
+  const lostBets = todayPaidBets.filter((bet) => bet.target !== betResult);
 
   // Create a promise for each bet and process them in parallel
-  const processBetsPromises = betsToProcess.map((bet) => {
+  const winBetsPromises = winBets.map((bet) => {
     const newStatus = betResult === bet.target ? BetStatus.WIN : BetStatus.LOST;
     return processBet(newStatus, bet, multiplier); // assuming processBet is async and returns a Promise
   });
 
+  const lostBetsPromises = lostBets.map((bet) => {
+    return updateBetStatus(bet.id, BetStatus.LOST);
+  });
+
   // Wait for all the bet processing to complete
-  await Promise.all(processBetsPromises);
+  await Promise.all([...winBetsPromises, ...lostBetsPromises]);
 }
 
 function calculateAmounts(todayPaidBets: Bet[]) {
@@ -78,7 +77,7 @@ async function processBet(newStatus: BetStatus, bet: Bet, multiplier: number) {
   const amountToPay =
     newStatus === BetStatus.WIN ? Number(bet.amount) * multiplier : 0;
   bet.status = newStatus;
-  updateBetStatus(bet.id, bet.status);
+  await updateBetStatus(bet.id, bet.status);
   if (!!amountToPay) {
     const paymentRequest = await createLnAddressInvoice(
       bet.lnAddress,

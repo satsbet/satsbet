@@ -26,15 +26,42 @@ export async function createLnAddressInvoice(
 }
 
 export async function runSettlement() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+  const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
   const yesterdayQuote = await prisma.quote.findFirst({
-    orderBy: { day: "desc" },
-    skip: 1,
+    select: { price: true, id: true, day: true },
+    where: {
+      day: {
+        gte: yesterday,
+        lt: today,
+      },
+    },
   });
+  if (!yesterdayQuote) {
+    throw new Error(`No quote found for yesterday ${yesterday.toISOString()}`);
+  }
   const todayQuote = await prisma.quote.findFirst({
-    orderBy: { day: "desc" },
+    select: { price: true, id: true, day: true },
+    where: {
+      day: {
+        gte: today,
+        lt: tomorrow,
+      },
+    },
   });
+  if (!todayQuote) {
+    throw new Error(`No quote found for today ${today.toISOString()}`);
+  }
   const todayPaidBets = await prisma.bet.findMany({
-    where: { status: BetStatus.PAID },
+    where: {
+      status: BetStatus.PAID,
+      createAt: {
+        gte: today,
+        lt: tomorrow,
+      },
+    },
   });
   if (!!yesterdayQuote && !!todayQuote && !!todayPaidBets.length) {
     await processSettlement(yesterdayQuote, todayQuote, todayPaidBets);

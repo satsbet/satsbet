@@ -6,26 +6,38 @@ import { lnbits } from "@/utils/lnbits";
 
 // create the lnbits invoice
 export async function createInvoice(amount: number, memo: string) {
-  return await lnbits.wallet.createInvoice({
-    amount,
-    memo,
-    out: false,
-  });
+  try {
+    return await lnbits.wallet.createInvoice({
+      amount,
+      memo,
+      out: false,
+    });
+  } catch (error) {
+    return error;
+  }
 }
 
 // pay the invoice the user created
 export async function payInvoice(bolt11: string) {
-  return await lnbits.wallet.payInvoice({
-    bolt11,
-    out: true,
-  });
+  try {
+    return await lnbits.wallet.payInvoice({
+      bolt11,
+      out: true,
+    });
+  } catch (error) {
+    return error;
+  }
 }
 
 // check if the user has paid the invoice
 export async function checkInvoice(payment_hash: string) {
-  return await lnbits.wallet.checkInvoice({
-    payment_hash,
-  });
+  try {
+    return await lnbits.wallet.checkInvoice({
+      payment_hash,
+    });
+  } catch (error) {
+    return error;
+  }
 }
 
 const schema = z.object({

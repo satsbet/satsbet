@@ -15,6 +15,8 @@ async function main() {
       lnAddress: "blah",
       status: "PENDING",
       target: "UP",
+      invoicePaymentHash: "blah",
+      invoiceRequestHash: "blah",
     },
   });
   const bet2 = await prisma.bet.upsert({
@@ -26,6 +28,8 @@ async function main() {
       lnAddress: "blah",
       status: "PAID",
       target: "UP",
+      invoicePaymentHash: "blah",
+      invoiceRequestHash: "blah",
     },
   });
   const bet3 = await prisma.bet.upsert({
@@ -37,6 +41,8 @@ async function main() {
       lnAddress: "blah",
       status: "PAID",
       target: "UP",
+      invoicePaymentHash: "blah",
+      invoiceRequestHash: "blah",
     },
   });
   const bet4 = await prisma.bet.upsert({
@@ -48,6 +54,8 @@ async function main() {
       lnAddress: "blah",
       status: "PAID",
       target: "DOWN",
+      invoicePaymentHash: "blah",
+      invoiceRequestHash: "blah",
     },
   });
 

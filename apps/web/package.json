@@ -11,13 +11,27 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
     "@prisma/client": "^5.5.2",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toggle": "^1.0.3",
     "@t3-oss/env-nextjs": "^0.7.1",
     "@vercel/analytics": "^1.1.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
     "lnbits": "^1.1.5",
+    "lucide-react": "^0.291.0",
     "next": "14.0.1",
+    "next-themes": "^0.2.1",
+    "pusher": "^5.1.3",
+    "pusher-js": "^8.3.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.47.0",
+    "react-qr-rounded": "^1.0.0",
+    "tailwind-merge": "^2.0.0",
+    "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"
   },
   "devDependencies": {

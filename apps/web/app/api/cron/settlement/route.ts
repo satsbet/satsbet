@@ -24,7 +24,7 @@ export async function createLnAddressInvoice(
   return pr;
 }
 
-export async function processSettlement(
+async function processSettlement(
   yesterdayQuote: Quote,
   todayQuote: Quote,
   todayPaidBets: Bet[],
@@ -32,7 +32,10 @@ export async function processSettlement(
   const betResult =
     todayQuote.price > yesterdayQuote.price ? BetTarget.UP : BetTarget.DOWN;
   const { amountUp, amountDown } = calculateAmounts(todayPaidBets);
-  let multiplier = localCalculateMultiplier(betResult, amountUp, amountDown);
+  let multiplier =
+    betResult === BetTarget.UP
+      ? calculateMultiplier(amountUp, amountDown)
+      : calculateMultiplier(amountDown, amountUp);
 
   // Get bets based on the result
   const winBets = todayPaidBets.filter((bet) => bet.target === betResult);
@@ -50,16 +53,6 @@ export async function processSettlement(
 
   // Wait for all the bet processing to complete
   await Promise.all([...winBetsPromises, ...lostBetsPromises]);
-}
-
-export function localCalculateMultiplier(
-  betResult: BetTarget,
-  amountUp: number,
-  amountDown: number,
-) {
-  return betResult === BetTarget.UP
-    ? calculateMultiplier(amountUp, amountDown)
-    : calculateMultiplier(amountDown, amountUp);
 }
 
 function calculateAmounts(todayPaidBets: Bet[]) {

@@ -2,6 +2,7 @@ import { Bet, BetStatus, BetTarget, Quote } from "@prisma/client";
 import { calculateMultiplier } from "./multipliers";
 import { prisma } from "@/utils/prisma";
 import { payInvoice } from "./api";
+import { SATSBET_FEE_PERCENT } from "./constants";
 
 export async function createLnAddressInvoice(
   lnAddress: string,
@@ -37,8 +38,14 @@ export async function processSettlement(
   const { amountUp, amountDown } = calculateAmounts(todayPaidBets);
   let multiplier =
     betResult === BetTarget.UP
-      ? calculateMultiplier(amountUp, amountDown)
-      : calculateMultiplier(amountDown, amountUp);
+      ? calculateMultiplier(
+          (amountUp * (100n - SATSBET_FEE_PERCENT)) / 100n,
+          amountDown,
+        )
+      : calculateMultiplier(
+          (amountDown * (100n - SATSBET_FEE_PERCENT)) / 100n,
+          amountUp,
+        );
 
   // Get bets based on the result
   const betsToProcess = todayPaidBets.filter((bet) => bet.target === betResult);

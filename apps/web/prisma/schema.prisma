@@ -48,5 +48,7 @@ model Bet {
   /// internal status of the bet
   status    BetStatus
   /// invoice payment hash
-  paymentHash String?
+  invoicePaymentHash String
+  /// invoice request hash
+  invoiceRequestHash String
 }

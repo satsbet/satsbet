@@ -22,7 +22,8 @@ export async function submitBet(bet: SubmitBetInput) {
       ...bet,
       status: BetStatus.PENDING,
       createAt: today,
-      paymentHash: lnbitsResponse.payment_hash,
+      invoicePaymentHash: lnbitsResponse.payment_hash,
+      invoiceRequestHash: lnbitsResponse.payment_request,
     },
   });
   return lnbitsResponse.payment_request;

@@ -3,8 +3,8 @@ name: Payment cronjob
 on:
   workflow_dispatch:
   schedule:
-    # Run every 30 seconds
-    - cron: "*/30 * * * *"
+    # Run every 5 minutes
+    - cron: "*/5 * * * *"
 
 jobs:
   cron:

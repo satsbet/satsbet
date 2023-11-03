@@ -55,6 +55,7 @@ export async function createBet(prevState: any, formData: FormData) {
   const { id } = await prisma.bet.create({
     data: {
       ...bet,
+      createAt: new Date(),
       invoicePaymentHash: lnbitsResponse.payment_hash,
       invoiceRequestHash: lnbitsResponse.payment_request,
     },

@@ -19,6 +19,16 @@ export async function GET() {
   return Response.json({ dispatched: true });
 }
 
+export async function POST() {
+  // Mark all unpaid invoices that have more than 5 min as expired
+  await expireInvoices();
+
+  // FIX: this should come from a webhook but lnbits is not sending it
+  await payInvoices();
+
+  return Response.json({ dispatched: true });
+}
+
 async function payInvoices() {
   const unpaidInvoices = await prisma.bet.findMany({
     select: {

@@ -48,6 +48,8 @@ export async function createBet(prevState: any, formData: FormData) {
   const lnbitsResponse = await lnbits.wallet.createInvoice({
     amount: Number(bet.amount),
     memo: "Thank you for betting with Satoshi!",
+    // @ts-expect-error
+    webhook: "https://satsbet.vercel.app/api/cron/payment",
     out: false,
   });
 

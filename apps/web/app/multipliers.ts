@@ -27,12 +27,12 @@ export function getTodayBets(status: BetStatus) {
   });
 }
 
-export function calculateMultiplier(amount1: bigint, amount2: bigint) {
+export function calculateMultiplier(amount1: number, amount2: number) {
   if (!amount2) {
     return TOP_MULTIPLIER;
   }
   const calculatedMultiplier =
-    (amount1 * ((100n - SATSBET_FEE_PERCENT) / 100n)) / amount2;
+    ((amount1 + amount2) * ((100 - SATSBET_FEE_PERCENT) / 100)) / amount1;
   return Math.min(Number(calculatedMultiplier), TOP_MULTIPLIER);
 }
 
@@ -53,14 +53,18 @@ export async function getMultiplier() {
   for (let i = 0; i < todayPendingBets.length; i++) {
     let todayPaidBet = todayPendingBets[i];
     if (todayPaidBet.target === BetTarget.UP) {
-      amountUp += (todayPaidBet.amount * PENDING_BETS_WEIGHT_PERCENT) / 100n;
+      amountUp += BigInt(
+        (Number(todayPaidBet.amount) * PENDING_BETS_WEIGHT_PERCENT) / 100,
+      );
     } else {
-      amountDown += (todayPaidBet.amount * PENDING_BETS_WEIGHT_PERCENT) / 100n;
+      amountDown += BigInt(
+        (Number(todayPaidBet.amount) * PENDING_BETS_WEIGHT_PERCENT) / 100,
+      );
     }
   }
 
   return {
-    up: calculateMultiplier(amountUp, amountDown),
-    down: calculateMultiplier(amountDown, amountUp),
+    up: calculateMultiplier(Number(amountUp), Number(amountDown)),
+    down: calculateMultiplier(Number(amountDown), Number(amountUp)),
   };
 }

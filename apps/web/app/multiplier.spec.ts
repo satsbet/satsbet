@@ -10,13 +10,13 @@ describe("multiplier", () => {
 
   describe("calculateMultiplier", () => {
     it("should return TOP_MULTIPLIER if amount2 is zero", () => {
-      const multiplier = calculateMultiplier(100n, 0n);
+      const multiplier = calculateMultiplier(100, 0);
       expect(multiplier).toBe(TOP_MULTIPLIER);
     });
 
     it("should correctly calculate the multiplier above 1", () => {
-      const amount1 = 100n;
-      const amount2 = 50n;
+      const amount1 = 100;
+      const amount2 = 50;
       const expectedMultiplier = 1.8;
       const multiplier = calculateMultiplier(amount1, amount2);
 
@@ -25,8 +25,8 @@ describe("multiplier", () => {
     });
 
     it("should correctly calculate the multiplier below 1", () => {
-      const amount1 = 50n;
-      const amount2 = 100n;
+      const amount1 = 50;
+      const amount2 = 100;
       const expectedMultiplier = 0.45;
       const multiplier = calculateMultiplier(amount1, amount2);
 
@@ -35,8 +35,8 @@ describe("multiplier", () => {
     });
 
     it("should correctly calculate the multiplier above 4", () => {
-      const amount1 = 300n;
-      const amount2 = 50n;
+      const amount1 = 300;
+      const amount2 = 50;
       const expectedMultiplier = TOP_MULTIPLIER;
       const multiplier = calculateMultiplier(amount1, amount2);
 

@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { lnbits } from "@/utils/lnbits";
 
 // create the lnbits invoice
@@ -24,4 +26,21 @@ export async function checkInvoice(payment_hash: string) {
   return await lnbits.wallet.checkInvoice({
     payment_hash,
   });
+}
+
+const schema = z.object({
+  todo: z.string().min(2),
+});
+
+export async function createTodo(prevState: any, formData: FormData) {
+  const data = schema.safeParse({
+    todo: formData.get("todo"),
+  });
+
+  if (!data.success) {
+    return { message: "Failed to create todo" };
+  }
+
+  console.log("🔥 ~ ", data);
+  return { message: "success" };
 }

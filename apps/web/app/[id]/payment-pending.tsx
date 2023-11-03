@@ -1,6 +1,7 @@
 import React from "react";
 import type { Bet } from "@prisma/client";
 import { QR } from "react-qr-rounded";
+import { Copyable } from "./copyable";
 
 export async function PaymentPending(props: Bet) {
   const { invoiceRequestHash } = props;
@@ -25,7 +26,7 @@ export async function PaymentPending(props: Bet) {
       >
         {invoiceRequestHash}
       </QR>
-      <pre>{invoiceRequestHash}</pre>
+      <Copyable text={invoiceRequestHash} />
     </div>
   );
 }

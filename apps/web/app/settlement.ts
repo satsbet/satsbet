@@ -1,5 +1,5 @@
 import { Bet, BetStatus, BetTarget, Quote } from "@prisma/client";
-import { calculateMultiplier } from "./multipliers";
+import { calculateMultiplier } from "./loader";
 import { prisma } from "@/utils/prisma";
 import { payInvoice } from "./actions";
 

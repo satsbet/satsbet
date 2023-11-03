@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { TOP_MULTIPLIER } from "./constants";
-import { calculateMultiplier } from "./multipliers";
+import { calculateMultiplier } from "./loader";
 
 describe("multiplier", () => {
   beforeEach(() => {

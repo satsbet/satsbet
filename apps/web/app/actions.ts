@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { lnbits } from "@/utils/lnbits";
+import { BetTarget } from "@prisma/client";
+import { submitBet } from "./submitBet";
 
 // create the lnbits invoice
 export async function createInvoice(amount: number, memo: string) {
@@ -41,18 +42,25 @@ export async function checkInvoice(payment_hash: string) {
 }
 
 const schema = z.object({
-  todo: z.string().min(2),
+  target: z.nativeEnum(BetTarget),
+  amount: z.coerce.bigint().positive(),
+  lnAddress: z.string().email("Please enter a lightning address"),
+  email: z.string().email("Please enter a valid email address").optional(),
 });
 
-export async function createTodo(prevState: any, formData: FormData) {
+export async function createBet(prevState: any, formData: FormData) {
   const data = schema.safeParse({
-    todo: formData.get("todo"),
+    target: formData.get("target"),
+    amount: formData.get("amount"),
+    lnAddress: formData.get("lnAddress"),
+    email: formData.get("email"),
   });
 
   if (!data.success) {
-    return { message: "Failed to create todo" };
+    return data.error.flatten();
   }
 
-  console.log("🔥 ~ ", data);
+  await submitBet(data.data);
+
   return { message: "success" };
 }

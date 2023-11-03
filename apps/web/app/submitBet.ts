@@ -6,6 +6,7 @@ export type SubmitBetInput = {
   amount: bigint;
   target: BetTarget;
   lnAddress: string;
+  email?: string;
 };
 
 export async function submitBet(bet: SubmitBetInput) {

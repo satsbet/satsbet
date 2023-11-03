@@ -18,7 +18,10 @@ export async function payInvoice(bolt11: string) {
 const schema = z.object({
   target: z.nativeEnum(BetTarget),
   amount: z.coerce.bigint().positive(),
-  lnAddress: z.string().email("Please enter a lightning address"),
+  lnAddress: z
+    .string()
+    .email("Please enter a lightning address")
+    .or(z.string().startsWith("ln")),
   email: z
     .string()
     .email("Please enter a valid email address")

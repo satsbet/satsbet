@@ -17,17 +17,17 @@ export function PaymentFlow({
   const [status, setStatus] = useState<BetStatus>(initialStatus);
 
   useEffect(() => {
-    const onPaymentIntentSucceeded = () => {
+    const onPaymentSucceeded = () => {
       setStatus("PAID");
     };
 
     pusherClient.subscribe(listenTo);
-    pusherClient.bind("payment_intent.succeeded", onPaymentIntentSucceeded);
+    pusherClient.bind("payment.succeeded", onPaymentSucceeded);
 
     return () => {
       // cleanup
       pusherClient.unsubscribe(listenTo);
-      pusherClient.unbind("payment_intent.succeeded", onPaymentIntentSucceeded);
+      pusherClient.unbind("payment.succeeded", onPaymentSucceeded);
     };
   }, [listenTo]);
 

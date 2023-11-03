@@ -48,10 +48,7 @@ export async function processSettlement(
   const betResult =
     todayQuote.price > yesterdayQuote.price ? BetTarget.UP : BetTarget.DOWN;
   const { amountUp, amountDown } = calculateAmounts(todayPaidBets);
-  let multiplier =
-    betResult === BetTarget.UP
-      ? calculateMultiplier(Number(amountUp), Number(amountDown))
-      : calculateMultiplier(Number(amountDown), Number(amountUp));
+  let multiplier = localCalculateMultiplier(betResult, amountUp, amountDown);
 
   // Get bets based on the result
   const winBets = todayPaidBets.filter((bet) => bet.target === betResult);
@@ -71,17 +68,27 @@ export async function processSettlement(
   await Promise.all([...winBetsPromises, ...lostBetsPromises]);
 }
 
+export function localCalculateMultiplier(
+  betResult: BetTarget,
+  amountUp: number,
+  amountDown: number,
+) {
+  return betResult === BetTarget.UP
+    ? calculateMultiplier(amountUp, amountDown)
+    : calculateMultiplier(amountDown, amountUp);
+}
+
 function calculateAmounts(todayPaidBets: Bet[]) {
   return todayPaidBets.reduce(
     (acc, bet) => {
       if (bet.target === BetTarget.UP) {
-        acc.amountUp += bet.amount;
+        acc.amountUp += Number(bet.amount);
       } else {
-        acc.amountDown += bet.amount;
+        acc.amountDown += Number(bet.amount);
       }
       return acc;
     },
-    { amountUp: 0n, amountDown: 0n },
+    { amountUp: 0, amountDown: 0 },
   );
 }
 

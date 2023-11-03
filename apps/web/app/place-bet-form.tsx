@@ -44,57 +44,81 @@ function FormError({ children }) {
   );
 }
 
-export function PlaceBetForm() {
+function Field({ children }) {
+  return <div className="flex flex-col gap-1 my-3">{children}</div>;
+}
+
+export function PlaceBetForm({ up, down }: { up: number; down: number }) {
   const [state, formAction] = useFormState(createBet, initialState);
   const [target, setTarget] = useState<BetTarget | undefined>();
+  const { format } = new Intl.NumberFormat("en-US", {
+    maximumSignificantDigits: 3,
+  });
 
   return (
     <form action={formAction}>
-      <Label htmlFor="target">Target</Label>
-      <div className="flex gap-2">
+      <div className="flex gap-4 justify-center">
         <input type="hidden" name="target" value={target || ""} />
         <Toggle
-          variant="outline"
-          className="w-28"
+          variant="down"
           pressed={target === "DOWN"}
           onPressedChange={() => setTarget("DOWN")}
         >
-          DOWN <TrendingDown className="h-4 w-4 ml-2" />
+          <div className="flex items-baseline">
+            <span className="md:text-3xl">▼</span>
+            <span className="text-5xl md:text-7xl font-extrabold align-bottom">
+              {format(down)}
+            </span>
+            <span className="text-lg md:text-3xl">x</span>
+          </div>
         </Toggle>
         <Toggle
-          variant="outline"
-          className="w-28"
+          variant="up"
           pressed={target === "UP"}
           onPressedChange={() => setTarget("UP")}
         >
-          <TrendingUp className="h-4 w-4 mr-2" />
-          UP
+          <div className="flex items-baseline">
+            <span className="md:text-3xl">▲</span>
+            <span className="text-5xl md:text-7xl font-extrabold align-bottom">
+              {format(up)}
+            </span>
+            <span className="text-lg md:text-3xl">x</span>
+          </div>
         </Toggle>
       </div>
       <FormError>{state?.fieldErrors?.target}</FormError>
 
       {target ? (
         <>
-          <Label htmlFor="amount">Amount</Label>
-          <Input type="text" id="amount" name="amount" required />
-          <FormError>{state?.fieldErrors?.amount}</FormError>
+          <Field>
+            <Label htmlFor="amount">Amount</Label>
+            <Input type="text" id="amount" name="amount" required />
+            <FormDescription>10% charged fees</FormDescription>
+            <FormError>{state?.fieldErrors?.amount}</FormError>
+          </Field>
 
-          <Label htmlFor="lnAddress" placeholder="you@your.domain">
-            LN Address
-          </Label>
-          <Input type="text" id="lnAddress" name="lnAddress" required />
-          <FormDescription>
-            The lightning address we are going to transfer your reward
-          </FormDescription>
-          <FormError>{state?.fieldErrors?.lnAddress}</FormError>
+          <Field>
+            <Label htmlFor="lnAddress" placeholder="you@your.domain">
+              LN Address
+            </Label>
+            <Input type="text" id="lnAddress" name="lnAddress" required />
+            <FormDescription>
+              The lightning address we are going to transfer your reward
+            </FormDescription>
+            <FormError>{state?.fieldErrors?.lnAddress}</FormError>
+          </Field>
 
-          <Label htmlFor="email" placeholder="you@your.domain">
-            Email (optional)
-          </Label>
-          <Input type="text" id="email" name="email" />
-          <FormError>{state?.fieldErrors?.email}</FormError>
+          <Field>
+            <Label htmlFor="email" placeholder="you@your.domain">
+              Email (optional)
+            </Label>
+            <Input type="text" id="email" name="email" />
+            <FormError>{state?.fieldErrors?.email}</FormError>
+          </Field>
 
-          <SubmitButton />
+          <div className="flex justify-end">
+            <SubmitButton />
+          </div>
         </>
       ) : null}
     </form>

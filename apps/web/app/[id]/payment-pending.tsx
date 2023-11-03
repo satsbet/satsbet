@@ -47,7 +47,7 @@ export async function PaymentPending(props: Bet) {
   time.setUTCSeconds(time.getUTCSeconds() + EXPIRATION_TIME / 1000);
 
   return (
-    <div className="max-w-lg mx-auto p-6 md:border rounded gap-4 flex flex-col">
+    <div className="max-w-lg mx-auto py-6 md:p-6 md:border-2 md:border-input-lg rounded gap-4 flex flex-col">
       <h1
         className="text-xl md:text-4xl font-extrabold"
         style={{

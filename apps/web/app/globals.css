@@ -28,11 +28,16 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
+    --border: 0 0% 3.9%;
+    --input: 0 0% 3.9%;
     --ring: 0 0% 3.9%;
 
     --radius: 0.5rem;
+
+    --up: 213 92% 61%;
+    --up-foreground: 213 62% 61%;
+    --down: 349 77% 57%;
+    --down-foreground: 349 57% 57%;
   }
 
   .dark {
@@ -72,5 +77,22 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .border-input {
+    box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1);
+    -webkit-box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1);
+  }
+  .border-input-lg {
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+    -webkit-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+  }
+
+  .text-bordered {
+    -webkit-text-stroke: 2px black; /* width and color */
   }
 }

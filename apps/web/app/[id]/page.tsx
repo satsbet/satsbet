@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PaymentFlow } from "./payment-flow";
 import { PaymentPending } from "./payment-pending";
 import { prisma } from "@/utils/prisma";
+import PaymentPaid from "./payment-paid";
 
 export default async function DonationStatusPage({
   params,
@@ -27,8 +28,8 @@ export default async function DonationStatusPage({
         listenTo={bet.id}
         views={{
           PENDING: <PaymentPending {...bet} />,
-          PAID: <>succeeded</>,
-          EXPIRED: <>expired</>,
+          PAID: <PaymentPaid />,
+          EXPIRED: <PaymentPending {...bet} />,
           LOST: <>lost</>,
           PROBLEM: <>problem</>,
           REFUNDED: <>refunded</>,

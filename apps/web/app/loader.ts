@@ -1,10 +1,7 @@
 import { prisma } from "@/utils/prisma";
 import { BetStatus, BetTarget } from "@prisma/client";
-import {
-  PENDING_BETS_WEIGHT_PERCENT,
-  SATSBET_FEE_PERCENT,
-  TOP_MULTIPLIER,
-} from "./constants";
+import { PENDING_BETS_WEIGHT_PERCENT } from "./constants";
+import { calculateProfit } from "../utils/multiplier";
 
 function getTodayBets() {
   const today = new Date();
@@ -36,23 +33,6 @@ function getTodayBets() {
 }
 
 /**
- * Calculate the multiplier for the pot
- *
- * @param pot The sum of the bets for the current day
- * @param other The other pot you want to compare with
- * @returns The multiplier for the pot
- */
-export function calculateMultiplier(pot: number, other: number) {
-  if (!other) {
-    return 1;
-  }
-  const calculatedMultiplier =
-    ((pot + other) * ((100 - SATSBET_FEE_PERCENT) / 100)) / pot;
-
-  return Math.min(calculatedMultiplier, TOP_MULTIPLIER);
-}
-
-/**
  * Get the multiplier for the current day
  *
  * @returns {Promise<{up: number, down: number}>} The multiplier for up and down
@@ -78,8 +58,8 @@ export async function getMultiplier() {
   );
 
   return {
-    up: calculateMultiplier(total.up, total.down),
-    down: calculateMultiplier(total.down, total.up),
+    up: calculateProfit(total.up, total.down) + 1,
+    down: calculateProfit(total.down, total.up) + 1,
   };
 }
 

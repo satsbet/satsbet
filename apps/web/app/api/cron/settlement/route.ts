@@ -1,5 +1,5 @@
 import { Bet, BetStatus, BetTarget, Quote } from "@prisma/client";
-import { calculateMultiplier } from "@/app/loader";
+import { calculateProfit } from "@/utils/multiplier";
 import { prisma } from "@/utils/prisma";
 import { payInvoice } from "@/app/actions";
 
@@ -34,8 +34,8 @@ async function processSettlement(
   const { amountUp, amountDown } = calculateAmounts(todayPaidBets);
   let multiplier =
     betResult === BetTarget.UP
-      ? calculateMultiplier(amountUp, amountDown)
-      : calculateMultiplier(amountDown, amountUp);
+      ? calculateProfit(amountUp, amountDown)
+      : calculateProfit(amountDown, amountUp);
 
   // Get bets based on the result
   const winBets = todayPaidBets.filter((bet) => bet.target === betResult);
